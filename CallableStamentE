@@ -1,0 +1,32 @@
+package Sample;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+
+public class CallableStamentEx {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		try {
+			Class.forName("org.postgresql.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:postgresql://192.168.110.48:5432/plf_training",
+					"plf_training_admin", "pff123");
+			String callProcedure = "{CALL get_data()}";
+			CallableStatement call = conn.prepareCall(callProcedure);
+
+			ResultSet resultSet = call.executeQuery();
+
+			while (resultSet.next()) {
+				String column1Value = resultSet.getString("ename");
+				String column2Value = resultSet.getString("job");
+				System.out.println("Column1: " + column1Value + ", Column2: " + column2Value);
+			}
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
