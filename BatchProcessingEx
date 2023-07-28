@@ -1,0 +1,27 @@
+package Sample;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class BatchProcessingEx {
+
+	public static void main(String[] args) {
+		try {
+			Class.forName("org.postgresql.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:postgresql://192.168.110.48:5432/plf_training",
+					"plf_training_admin", "pff123");
+			Statement st = conn.createStatement();
+			String q = "Insert into satish(ename,job) Values('Satish','Manager')";
+			String p = "Insert into satish(ename,job) Values('Abhi','Clerk')";
+			st.addBatch(q);
+			st.addBatch(p);
+			st.executeBatch();
+			st.close();
+			conn.close();
+		} catch (Exception e) {
+			System.out.println("Exception");
+		}
+	}
+
+}
