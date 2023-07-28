@@ -1,0 +1,31 @@
+package Sample;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class JdbcExample2 {
+
+	public static void main(String[] args) {
+		try {
+			Class.forName("org.postgresql.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:postgresql://192.168.110.48:5432/plf_training",
+					"plf_training_admin", "pff123");
+			Statement st = conn.createStatement();
+			String q = "select ename from satish where job='CLERK'";
+			ResultSet r = st.executeQuery(q);
+			while (r.next()) {
+				String Name = r.getString("ename");
+				System.out.println(Name);
+			}
+			r.close();
+			st.close();
+			conn.close();
+		} catch (Exception e) {
+			System.out.println("Exception");
+		}
+
+	}
+
+}
