@@ -1,0 +1,45 @@
+package Sample;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class SimpleJdbcExample {
+	public static void main(String[] args) {
+		String url = "jdbc:postgresql://192.168.110.48:5432/plf_training";
+		String username = "plf_training_admin";
+		String password = "pff123";
+
+		try {
+			// Step 1: Register the JDBC driver (optional in newer versions of JDBC)
+			Class.forName("org.postgresql.Driver");
+
+			// Step 2: Create the connection to the database
+			Connection connection = DriverManager.getConnection(url, username, password);
+
+			// Step 3: Create a statement
+			Statement statement = connection.createStatement();
+
+			// Step 4: Execute the query
+			String query = "SELECT ename,job FROM satish";
+			ResultSet resultSet = statement.executeQuery(query);
+
+			// Step 5: Process the result set
+			while (resultSet.next()) {
+
+				String name = resultSet.getString("ename");
+				String job = resultSet.getString("job");
+				System.out.println("Name: " + name + " Job:" + job);
+			}
+
+			// Step 6: Clean up resources
+			resultSet.close();
+			statement.close();
+			connection.close();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}
